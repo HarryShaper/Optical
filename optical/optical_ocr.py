@@ -1,4 +1,13 @@
-# IMPORTS
+'''*************************************************
+content     Optical - OCR
+
+version     0.0.1
+date        21-04-2026
+
+author      Harry Shaper <harryshaper@gmail.com>
+
+*************************************************'''
+
 import sys
 import os
 import re
@@ -8,12 +17,11 @@ import easyocr
 from tqdm import tqdm
 import string
 
-#*********************************************************************#
-# CONSTANTS
-#*********************************************************************#
 
+# CONSTANTS
 LANGUAGES = ['en']
-confidence_threshold = 0.3
+
+confidence_threshold = 0.5
 
 ROI_PCT = {
 	"x": 0.0474,
@@ -33,21 +41,7 @@ CONFUSABLE_DIGITS = {
 }
 
 #*********************************************************************#
-# DYNAMICALLY FETCH SELECTED FOLDER
-#*********************************************************************#
-
-if len(sys.argv) >= 2:
-	SHOOT_FOLDER = sys.argv[1]
-else:
-	SHOOT_FOLDER = r"C:\Users\Harry Shaper\Desktop\test_setref"
-
-if not os.path.isdir(SHOOT_FOLDER):
-	print(f"Error: '{SHOOT_FOLDER}' is not a valid folder.")
-	sys.exit(1)
-
-#*********************************************************************#
 # FUNCTIONS
-#*********************************************************************#
 
 # ---------------- IMAGE DESKEW / PREPROCESS ---------------- #
 
@@ -101,12 +95,45 @@ def prep_image(image_path: str):
 
 # ---------------- SANITIZE FOLDER NAME ---------------- #
 
-def sanitize_filename(text):
+def normalize_detected_text(text: str) -> str:
 	if not text:
 		return None
-	sanitized = re.sub(r'[\\/*?:"<>|]', '', text)
-	sanitized = re.sub(r'\s+', '', sanitized)
-	return sanitized
+
+	text = text.upper().strip()
+
+	# Remove illegal filename characters
+	text = re.sub(r'[\\/*?:"<>|]', '', text)
+
+	# Replace whitespace and hyphens with underscores
+	text = re.sub(r'[\s\-]+', '_', text)
+
+	# Collapse repeated underscores
+	text = re.sub(r'_+', '_', text)
+
+	# Trim invalid edge characters
+	text = text.strip(' _.')
+	return text or None
+
+def looks_like_intentional_label(text: str) -> bool:
+	if not text:
+		return False
+
+	text = text.strip().upper()
+
+	# Too short to be meaningful
+	if len(text) < 3:
+		return False
+
+	# Must contain at least one letter
+	if not re.search(r'[A-Z]', text):
+		return False
+
+	# Must be mostly letters, digits, or underscores
+	valid_count = sum(ch.isalnum() or ch == '_' for ch in text)
+	if valid_count < max(3, int(len(text) * 0.6)):
+		return False
+
+	return True
 
 # ---------------- CORRECT SLATE USING DOMAIN RULES ---------------- #
 
@@ -190,23 +217,36 @@ def generate_confusable_numbers(num_str: str):
 
 # ---------------- FETCH SLATE DATA USING OCR ---------------- #
 
-reader = easyocr.Reader(LANGUAGES, gpu=True, verbose=False)
+try:
+	import torch
+	GPU_AVAILABLE = torch.cuda.is_available()
+except Exception:
+	GPU_AVAILABLE = False
+
+reader = easyocr.Reader(LANGUAGES, gpu=GPU_AVAILABLE, verbose=False)
 
 def fetch_slate_data(image_path, threshold=confidence_threshold):
 	prepped = prep_image(image_path)
 	if prepped is None:
 		return None
+
 	results = reader.readtext(prepped, detail=1)
 	if not results:
 		return None
+
 	filtered = [res[1] for res in results if res[2] >= threshold]
 	if not filtered:
 		return None
-	text = ''.join(filtered)
-	text = re.sub(r'\s+', '', text)
-	text = re.sub(r'[\\/*?:"<>|]', '', text)
-	corrected = correct_slate(text)
-	return corrected
+
+	# Preserve word boundaries instead of crushing everything together
+	text = " ".join(filtered)
+
+	normalized = normalize_detected_text(text)
+
+	if not looks_like_intentional_label(normalized):
+		return None
+
+	return normalized
 
 # ---------------- RENAME FOLDERS BASED ON SLATE ---------------- #
 
@@ -253,9 +293,15 @@ def show_image(img, title="Preview", max_dim=1400):
 
 if __name__ == "__main__":
 	try:
-		print("hello")
-		rename_by_slate()
+		if len(sys.argv) < 2:
+			print("Usage: python optical_ocr.py <image_path>")
+			sys.exit(1)
+
+		image_path = sys.argv[1]
+		result = fetch_slate_data(image_path)
+		print(result if result else "No confident text found")
+
 	except Exception as e:
-		print("\n❌ ERROR:")
+		print("\nERROR:")
 		print(e)
 		input("\nPress Enter to close...")
