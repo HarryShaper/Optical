@@ -1,5 +1,5 @@
 Qt.py
-PySide2
+PySide6
 
 easyocr
 torch
