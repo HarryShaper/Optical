@@ -1,5 +1,10 @@
-cv2
-numpy
+Qt.py
+PySide2
+
 easyocr
-tqdm
-string
+torch
+torchvision
+
+opencv-python
+numpy
+Pillow
