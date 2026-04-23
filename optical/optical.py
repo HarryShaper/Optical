@@ -1446,7 +1446,21 @@ class Optical:
 			return "cpu"
 
 	def is_ocr_gpu_available(self):
-		return self.get_ocr_acceleration_backend() in ("cuda", "mps")
+		try:
+			import torch
+
+			# CUDA (Windows / Linux NVIDIA)
+			if torch.cuda.is_available():
+				return True
+
+			# MPS (Mac Apple Silicon)
+			if hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+				return True
+
+			return False
+
+		except Exception:
+			return False
 
 	def confirm_cpu_ocr_fallback_if_needed(self):
 		backend = self.get_ocr_acceleration_backend()
