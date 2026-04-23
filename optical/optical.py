@@ -1430,22 +1430,35 @@ class Optical:
 
 		return sorted(images, key=lambda x: os.path.basename(x).lower())
 
-	def is_ocr_gpu_available(self):
+	def get_ocr_acceleration_backend(self):
 		try:
 			import torch
-			return torch.cuda.is_available()
+
+			if torch.cuda.is_available():
+				return "cuda"
+
+			if hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+				return "mps"
+
+			return "cpu"
+
 		except Exception:
-			return False
+			return "cpu"
+
+	def is_ocr_gpu_available(self):
+		return self.get_ocr_acceleration_backend() in ("cuda", "mps")
 
 	def confirm_cpu_ocr_fallback_if_needed(self):
-		if self.is_ocr_gpu_available():
+		backend = self.get_ocr_acceleration_backend()
+
+		if backend in ("cuda", "mps"):
 			return True
 
 		return self.show_confirm_dialog(
-			title="No GPU Detected",
-			heading="Run OCR Without GPU?",
-			detail="No compatible GPU was detected for OCR acceleration.",
-			sub_detail="OCR can still run on CPU, but this may take significantly longer on larger folders. Continue anyway?",
+			title="No GPU Acceleration Detected",
+			heading="Run OCR Without GPU Acceleration?",
+			detail="No compatible CUDA or Apple Metal acceleration was detected.",
+			sub_detail="OCR can still run on CPU, but it may take significantly longer on larger folders. Continue anyway?",
 			confirm_text="Continue Anyway"
 		)
 
