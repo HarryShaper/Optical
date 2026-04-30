@@ -766,26 +766,25 @@ class Optical:
 			QtGui.QIcon(icon_path("browse_file_icon"))
 		)
 
-		self.wgOptical.input_targetFolder.setFixedHeight(24)
-		self.wgOptical.btn_browseTargetFolder.setFixedSize(24, 24)
+		# ----------------------------------------------------------------------
+		# TARGET FOLDER INPUT SETUP
+		target_height = 24
+		button_width = 26
+
+		self.wgOptical.frame_inputTargetFolder.setFixedHeight(target_height)
+		self.wgOptical.input_targetFolder.setFixedHeight(target_height - 4)
+		self.wgOptical.btn_browseTargetFolder.setFixedSize(button_width, target_height - 4)
 
 		self.wgOptical.input_targetFolder.setContentsMargins(0, 0, 0, 0)
 		self.wgOptical.btn_browseTargetFolder.setContentsMargins(0, 0, 0, 0)
 
-		self.wgOptical.btn_browseTargetFolder.setStyleSheet("""
-		QPushButton {
-			background-color: #f0b000;
-			border: none;
-			padding: 0px;
-			margin: 0px;
-		}
-		QPushButton:hover {
-			background-color: #ffc533;
-		}
-		QPushButton:pressed {
-			background-color: #d89c00;
-		}
-		""")
+		target_layout = self.wgOptical.frame_inputTargetFolder.layout()
+		if target_layout:
+			target_layout.setContentsMargins(0, 0, 0, 0)
+			target_layout.setSpacing(0)
+			target_layout.setAlignment(QtCore.Qt.AlignVCenter)
+			target_layout.setAlignment(self.wgOptical.input_targetFolder, QtCore.Qt.AlignVCenter)
+			target_layout.setAlignment(self.wgOptical.btn_browseTargetFolder, QtCore.Qt.AlignVCenter)
 
 		# ----------------------------------------------------------------------
 		# SIGNALS

@@ -124,9 +124,6 @@ QLineEdit#input_targetFolder {
     color: #1b1b1b;
     border: none;
     padding: 0px 6px;
-
-    min-height: 22px;
-    max-height: 22px;
 }
 
 /* Button has no border now */
@@ -136,10 +133,10 @@ QPushButton#btn_browseTargetFolder {
     border: none;
     padding: 0px;
 
-    min-width: 22px;
-    max-width: 22px;
-    min-height: 22px;
-    max-height: 22px;
+    min-width: 26px;
+    max-width: 26px;
+    min-height: 20px;
+    max-height: 20px;
 }
 
 QPushButton#btn_browseTargetFolder:hover {
@@ -992,7 +989,7 @@ QListWidget#thumbnailStrip QScrollBar::handle:horizontal:pressed {
                                        <property name="minimumSize">
                                         <size>
                                          <width>0</width>
-                                         <height>22</height>
+                                         <height>0</height>
                                         </size>
                                        </property>
                                        <property name="text">
@@ -1007,14 +1004,14 @@ QListWidget#thumbnailStrip QScrollBar::handle:horizontal:pressed {
                                       <widget class="QPushButton" name="btn_browseTargetFolder">
                                        <property name="minimumSize">
                                         <size>
-                                         <width>22</width>
-                                         <height>22</height>
+                                         <width>26</width>
+                                         <height>20</height>
                                         </size>
                                        </property>
                                        <property name="maximumSize">
                                         <size>
-                                         <width>22</width>
-                                         <height>22</height>
+                                         <width>26</width>
+                                         <height>20</height>
                                         </size>
                                        </property>
                                        <property name="text">
