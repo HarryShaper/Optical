@@ -1,2 +1,10 @@
-*.pyc
+.venv/
+build/
+dist/
+*.spec
+
+installer/installer_output/
+installer_output/
+
 __pycache__/
+*.pyc

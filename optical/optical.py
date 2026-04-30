@@ -17,16 +17,20 @@ from Qt import QtWidgets, QtGui, QtCore, QtCompat
 
 # CONSTANTS
 TITLE = Path(__file__).stem
-CURRENT_PATH = Path(__file__).resolve().parent
-ROOT_DIR = CURRENT_PATH.parent
 
-ICONS_DIR = ROOT_DIR / "assets" / "Icons"
-UI_PATH = CURRENT_PATH / "ui" / "Optical.ui"
+if getattr(sys, "frozen", False):
+	APP_ROOT = Path(sys._MEIPASS)
+	ICONS_DIR = APP_ROOT / "assets" / "Icons"
+	UI_PATH = APP_ROOT / "ui" / "Optical.ui"
+else:
+	CURRENT_PATH = Path(__file__).resolve().parent
+	ROOT_DIR = CURRENT_PATH.parent
+	ICONS_DIR = ROOT_DIR / "assets" / "Icons"
+	UI_PATH = CURRENT_PATH / "ui" / "Optical.ui"
 
 
-def icon_path(name):
-	return str(ICONS_DIR / f"{name}.png")
-
+def icon_path(name, ext="png"):
+	return str(ICONS_DIR / f"{name}.{ext}")
 
 # ******************************************************************************
 # HELPERS
@@ -763,8 +767,10 @@ class Optical:
 		# ----------------------------------------------------------------------
 		# TOOL ICONS
 		self.wgOptical.btn_browseTargetFolder.setIcon(
-			QtGui.QIcon(icon_path("browse_file_icon"))
+			QtGui.QIcon(icon_path("browse_file_icon","png"))
 		)
+
+		self.wgOptical.setWindowIcon(QtGui.QIcon(icon_path("logo", "ico")))
 
 		# ----------------------------------------------------------------------
 		# TARGET FOLDER INPUT SETUP
