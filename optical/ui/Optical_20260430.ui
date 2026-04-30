@@ -67,7 +67,6 @@ QLabel#label_version {
     background: transparent;
 }
 
-
 /* ============================================================ */
 /* SECTION HEADINGS / TITLES                                    */
 /* ============================================================ */
@@ -103,52 +102,38 @@ QWidget#page_emptyFolderList {
     background-color: #2f2f2f;
 }
 
-/* Base LineEdit */
+/* Frame now owns the full outline */
+QFrame#frame_inputTargetFolder {
+    background-color: #d6d6d6;
+    border: 2px solid #bcbcbc;
+    border-radius: 2px;
+    padding: 0px;
+}
+
+QFrame#frame_inputTargetFolder[pathState=&quot;missing&quot;] {
+    border: 2px solid #d96c6c;
+}
+
+QFrame#frame_inputTargetFolder[pathState=&quot;valid&quot;] {
+    border: 2px solid #5fcf8f;
+}
+
+/* LineEdit has no border now */
 QLineEdit#input_targetFolder {
     background-color: #d6d6d6;
     color: #1b1b1b;
-
-    border: 2px solid #bcbcbc;
-    border-right: none;
-
-    border-top-left-radius: 2px;
-    border-bottom-left-radius: 2px;
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-
+    border: none;
     padding: 0px 6px;
 
     min-height: 22px;
     max-height: 22px;
 }
 
-/* Missing LineEdit */
-QLineEdit#input_targetFolder[pathState=&quot;missing&quot;] {
-    border-color: #d96c6c;
-    border-right: none;
-}
-
-/* Valid LineEdit */
-QLineEdit#input_targetFolder[pathState=&quot;valid&quot;] {
-    border-color: #5fcf8f;
-    border-right: none;
-}
-
-/* Base Button */
+/* Button has no border now */
 QPushButton#btn_browseTargetFolder {
     background-color: #f0b000;
     color: #1b1b1b;
-
-    border-top: 2px solid #bcbcbc;
-    border-right: 2px solid #bcbcbc;
-    border-bottom: 2px solid #bcbcbc;
-    border-left: none;
-
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-top-right-radius: 2px;
-    border-bottom-right-radius: 2px;
-
+    border: none;
     padding: 0px;
 
     min-width: 22px;
@@ -157,37 +142,14 @@ QPushButton#btn_browseTargetFolder {
     max-height: 22px;
 }
 
-/* Missing Button */
-QPushButton#btn_browseTargetFolder[pathState=&quot;missing&quot;] {
-    background-color: #f0b000;
-
-    border-top: 2px solid #d96c6c;
-    border-right: 2px solid #d96c6c;
-    border-bottom: 2px solid #d96c6c;
-    border-left: none;
-}
-
-/* Valid Button */
-QPushButton#btn_browseTargetFolder[pathState=&quot;valid&quot;] {
-    background-color: #f0b000;
-
-    border-top: 2px solid #5fcf8f;
-    border-right: 2px solid #5fcf8f;
-    border-bottom: 2px solid #5fcf8f;
-    border-left: none;
-}
-
-QPushButton#btn_browseTargetFolder:hover,
-QPushButton#btn_browseTargetFolder[pathState=&quot;missing&quot;]:hover,
-QPushButton#btn_browseTargetFolder[pathState=&quot;valid&quot;]:hover {
+QPushButton#btn_browseTargetFolder:hover {
     background-color: #ffc533;
 }
 
-QPushButton#btn_browseTargetFolder:pressed,
-QPushButton#btn_browseTargetFolder[pathState=&quot;missing&quot;]:pressed,
-QPushButton#btn_browseTargetFolder[pathState=&quot;valid&quot;]:pressed {
+QPushButton#btn_browseTargetFolder:pressed {
     background-color: #d89c00;
 }
+
 /* ============================================================ */
 /* FOLDER LIST PANEL                                            */
 /* ============================================================ */
@@ -232,7 +194,6 @@ QListWidget#list_folders::item:selected {
     color: #f0b000;
 }
 
-
 /* ============================================================ */
 /* EMPTY STATE CARDS                                            */
 /* ============================================================ */
@@ -259,7 +220,6 @@ QLabel#label_listEmptyDetail {
     background: transparent;
 }
 
-
 /* ============================================================ */
 /* IMAGE PREVIEW / TEXT ENTRY                                   */
 /* ============================================================ */
@@ -280,7 +240,6 @@ QLineEdit#lineEdit_textInput:focus {
     border: none;
     outline: none;
 }
-
 
 /* ============================================================ */
 /* PRIMARY ACTION BUTTONS                                       */
@@ -305,7 +264,6 @@ QPushButton#btn_autoRun:pressed,
 QPushButton#btn_renameFolders:pressed {
     background-color: #d89c00;
 }
-
 
 /* ============================================================ */
 /* CONFIRM / IGNORE BUTTONS                                     */
@@ -348,7 +306,7 @@ QPushButton#btn_ignore:pressed {
 }
 
 /* ============================================================ */
-/* IMAGE VIEWER                                     */
+/* IMAGE VIEWER                                                 */
 /* ============================================================ */
 
 QWidget#page_previewImage,
@@ -360,23 +318,11 @@ QGraphicsView#imageView {
 }
 
 QLabel#label_originalFolderName {
-    background-color: #090909;
-    color: #ededed;
-    padding: 6px 12px;
-    font-size: 10pt;
-    font-weight: 600;
-    border: none;
-}
-
-QLabel#label_originalFolderName {
     background-color: rgba(9, 9, 9, 220);
     color: #ededed;
-
     padding: 8px 14px;
-
     font-size: 12pt;
     font-weight: 700;
-
     border-radius: 4px;
 }
 
@@ -483,9 +429,7 @@ QListWidget#thumbnailStrip QScrollBar::handle:horizontal:hover {
 
 QListWidget#thumbnailStrip QScrollBar::handle:horizontal:pressed {
     background: #c99700;
-}
-
-</string>
+}</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="2,20,2">
    <property name="spacing">
@@ -1014,52 +958,78 @@ QListWidget#thumbnailStrip QScrollBar::handle:horizontal:pressed {
                                    <number>10</number>
                                   </property>
                                   <item>
-                                   <layout class="QHBoxLayout" name="horizontalLayout_11">
-                                    <property name="spacing">
-                                     <number>0</number>
+                                   <widget class="QFrame" name="frame_inputTargetFolder">
+                                    <property name="minimumSize">
+                                     <size>
+                                      <width>50</width>
+                                      <height>0</height>
+                                     </size>
                                     </property>
-                                    <item>
-                                     <widget class="QLineEdit" name="input_targetFolder">
-                                      <property name="minimumSize">
-                                       <size>
-                                        <width>0</width>
-                                        <height>26</height>
-                                       </size>
-                                      </property>
-                                      <property name="text">
-                                       <string>No folder selected...</string>
-                                      </property>
-                                      <property name="readOnly">
-                                       <bool>true</bool>
-                                      </property>
-                                     </widget>
-                                    </item>
-                                    <item>
-                                     <widget class="QPushButton" name="btn_browseTargetFolder">
-                                      <property name="minimumSize">
-                                       <size>
-                                        <width>24</width>
-                                        <height>26</height>
-                                       </size>
-                                      </property>
-                                      <property name="maximumSize">
-                                       <size>
-                                        <width>24</width>
-                                        <height>26</height>
-                                       </size>
-                                      </property>
-                                      <property name="text">
-                                       <string/>
-                                      </property>
-                                      <property name="iconSize">
-                                       <size>
-                                        <width>12</width>
-                                        <height>12</height>
-                                       </size>
-                                      </property>
-                                     </widget>
-                                    </item>
-                                   </layout>
+                                    <property name="frameShape">
+                                     <enum>QFrame::StyledPanel</enum>
+                                    </property>
+                                    <property name="frameShadow">
+                                     <enum>QFrame::Raised</enum>
+                                    </property>
+                                    <layout class="QHBoxLayout" name="horizontalLayout_5">
+                                     <property name="spacing">
+                                      <number>0</number>
+                                     </property>
+                                     <property name="leftMargin">
+                                      <number>0</number>
+                                     </property>
+                                     <property name="topMargin">
+                                      <number>0</number>
+                                     </property>
+                                     <property name="rightMargin">
+                                      <number>0</number>
+                                     </property>
+                                     <property name="bottomMargin">
+                                      <number>0</number>
+                                     </property>
+                                     <item>
+                                      <widget class="QLineEdit" name="input_targetFolder">
+                                       <property name="minimumSize">
+                                        <size>
+                                         <width>0</width>
+                                         <height>22</height>
+                                        </size>
+                                       </property>
+                                       <property name="text">
+                                        <string>No folder selected...</string>
+                                       </property>
+                                       <property name="readOnly">
+                                        <bool>true</bool>
+                                       </property>
+                                      </widget>
+                                     </item>
+                                     <item>
+                                      <widget class="QPushButton" name="btn_browseTargetFolder">
+                                       <property name="minimumSize">
+                                        <size>
+                                         <width>22</width>
+                                         <height>22</height>
+                                        </size>
+                                       </property>
+                                       <property name="maximumSize">
+                                        <size>
+                                         <width>22</width>
+                                         <height>22</height>
+                                        </size>
+                                       </property>
+                                       <property name="text">
+                                        <string/>
+                                       </property>
+                                       <property name="iconSize">
+                                        <size>
+                                         <width>12</width>
+                                         <height>12</height>
+                                        </size>
+                                       </property>
+                                      </widget>
+                                     </item>
+                                    </layout>
+                                   </widget>
                                   </item>
                                  </layout>
                                 </widget>

@@ -766,6 +766,27 @@ class Optical:
 			QtGui.QIcon(icon_path("browse_file_icon"))
 		)
 
+		self.wgOptical.input_targetFolder.setFixedHeight(24)
+		self.wgOptical.btn_browseTargetFolder.setFixedSize(24, 24)
+
+		self.wgOptical.input_targetFolder.setContentsMargins(0, 0, 0, 0)
+		self.wgOptical.btn_browseTargetFolder.setContentsMargins(0, 0, 0, 0)
+
+		self.wgOptical.btn_browseTargetFolder.setStyleSheet("""
+		QPushButton {
+			background-color: #f0b000;
+			border: none;
+			padding: 0px;
+			margin: 0px;
+		}
+		QPushButton:hover {
+			background-color: #ffc533;
+		}
+		QPushButton:pressed {
+			background-color: #d89c00;
+		}
+		""")
+
 		# ----------------------------------------------------------------------
 		# SIGNALS
 		self.wgOptical.btn_browseTargetFolder.clicked.connect(self.press_browseTargetFolder)
@@ -1602,6 +1623,7 @@ class Optical:
 			state = "missing"
 
 		widgets = [
+			self.wgOptical.frame_inputTargetFolder,   # ← NEW (important)
 			self.wgOptical.input_targetFolder,
 			self.wgOptical.btn_browseTargetFolder,
 		]
@@ -1611,14 +1633,6 @@ class Optical:
 			widget.style().unpolish(widget)
 			widget.style().polish(widget)
 			widget.update()
-			widget.repaint()
-
-		print("Target folder state:", state)
-		print("LineEdit property:", self.wgOptical.input_targetFolder.property("pathState"))
-		print("Button property:", self.wgOptical.btn_browseTargetFolder.property("pathState"))
-		print("Button objectName:", self.wgOptical.btn_browseTargetFolder.objectName())
-		print("Button stylesheet:", self.wgOptical.btn_browseTargetFolder.styleSheet())
-
 	# ******************************************************************************
 	# FOLDER / IMAGE SELECTION
 
