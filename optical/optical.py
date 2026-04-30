@@ -21,7 +21,7 @@ CURRENT_PATH = Path(__file__).resolve().parent
 ROOT_DIR = CURRENT_PATH.parent
 
 ICONS_DIR = ROOT_DIR / "assets" / "Icons"
-UI_PATH = CURRENT_PATH / "ui" / "Optical_20260430.ui"
+UI_PATH = CURRENT_PATH / "ui" / "Optical.ui"
 
 
 def icon_path(name):
@@ -768,23 +768,19 @@ class Optical:
 
 		# ----------------------------------------------------------------------
 		# TARGET FOLDER INPUT SETUP
-		target_height = 24
-		button_width = 26
+		target_height = 34
+		button_width = 34
+		outline = 3
 
 		self.wgOptical.frame_inputTargetFolder.setFixedHeight(target_height)
-		self.wgOptical.input_targetFolder.setFixedHeight(target_height - 4)
-		self.wgOptical.btn_browseTargetFolder.setFixedSize(button_width, target_height - 4)
 
-		self.wgOptical.input_targetFolder.setContentsMargins(0, 0, 0, 0)
-		self.wgOptical.btn_browseTargetFolder.setContentsMargins(0, 0, 0, 0)
-
+		# Disable the layout inside the frame so Qt/macOS cannot offset the widgets.
 		target_layout = self.wgOptical.frame_inputTargetFolder.layout()
 		if target_layout:
-			target_layout.setContentsMargins(0, 0, 0, 0)
-			target_layout.setSpacing(0)
-			target_layout.setAlignment(QtCore.Qt.AlignVCenter)
-			target_layout.setAlignment(self.wgOptical.input_targetFolder, QtCore.Qt.AlignVCenter)
-			target_layout.setAlignment(self.wgOptical.btn_browseTargetFolder, QtCore.Qt.AlignVCenter)
+			target_layout.setEnabled(False)
+
+		self.resize_target_folder_widgets()
+		QtCore.QTimer.singleShot(0, self.resize_target_folder_widgets)
 
 		# ----------------------------------------------------------------------
 		# SIGNALS
@@ -828,6 +824,43 @@ class Optical:
 
 		# DISPLAY
 		self.wgOptical.show()
+
+	# =============================
+	# ADJUST WIDGET SIZE
+	# =============================
+
+
+	def resize_target_folder_widgets(self):
+	    target_height = 34
+	    button_width = 34
+	    outline = 3
+
+	    frame = self.wgOptical.frame_inputTargetFolder
+	    line_edit = self.wgOptical.input_targetFolder
+	    button = self.wgOptical.btn_browseTargetFolder
+
+	    frame.setFixedHeight(target_height)
+
+	    inner_y = outline
+	    inner_height = frame.height() - (outline * 2)
+
+	    line_edit.setGeometry(
+	        outline,
+	        inner_y,
+	        frame.width() - button_width - (outline * 2),
+	        inner_height
+	    )
+
+	    button.setGeometry(
+	        frame.width() - button_width - outline,
+	        inner_y,
+	        button_width,
+	        inner_height
+	    )
+
+	    line_edit.setAlignment(QtCore.Qt.AlignVCenter)
+	    line_edit.setContentsMargins(0, 0, 0, 0)
+	    button.setContentsMargins(0, 0, 0, 0)
 
 	# =============================
 	# FOLDER PANEL STATES

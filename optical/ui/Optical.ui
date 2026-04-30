@@ -102,41 +102,40 @@ QWidget#page_emptyFolderList {
     background-color: #2f2f2f;
 }
 
-/* Frame now owns the full outline */
 QFrame#frame_inputTargetFolder {
-    background-color: #d6d6d6;
-    border: 2px solid #bcbcbc;
+    background-color: #bcbcbc;
+    border: none;
     border-radius: 2px;
     padding: 0px;
 }
 
 QFrame#frame_inputTargetFolder[pathState=&quot;missing&quot;] {
-    border: 2px solid #d96c6c;
+    background-color: #d96c6c;
 }
 
 QFrame#frame_inputTargetFolder[pathState=&quot;valid&quot;] {
-    border: 2px solid #5fcf8f;
+    background-color: #5fcf8f;
 }
 
-/* LineEdit has no border now */
 QLineEdit#input_targetFolder {
     background-color: #d6d6d6;
     color: #1b1b1b;
     border: none;
     padding: 0px 6px;
+    font-size: 10pt;
 }
 
-/* Button has no border now */
 QPushButton#btn_browseTargetFolder {
     background-color: #f0b000;
     color: #1b1b1b;
     border: none;
     padding: 0px;
+    margin: 0px;
 
-    min-width: 26px;
-    max-width: 26px;
-    min-height: 20px;
-    max-height: 20px;
+    min-width: 34px;
+    max-width: 34px;
+    min-height: 28px;
+    max-height: 28px;
 }
 
 QPushButton#btn_browseTargetFolder:hover {
@@ -1004,14 +1003,14 @@ QListWidget#thumbnailStrip QScrollBar::handle:horizontal:pressed {
                                       <widget class="QPushButton" name="btn_browseTargetFolder">
                                        <property name="minimumSize">
                                         <size>
-                                         <width>26</width>
-                                         <height>20</height>
+                                         <width>34</width>
+                                         <height>28</height>
                                         </size>
                                        </property>
                                        <property name="maximumSize">
                                         <size>
-                                         <width>26</width>
-                                         <height>20</height>
+                                         <width>34</width>
+                                         <height>28</height>
                                         </size>
                                        </property>
                                        <property name="text">
