@@ -21,7 +21,7 @@ CURRENT_PATH = Path(__file__).resolve().parent
 ROOT_DIR = CURRENT_PATH.parent
 
 ICONS_DIR = ROOT_DIR / "assets" / "Icons"
-UI_PATH = CURRENT_PATH / "ui" / "Optical_20260422.ui"
+UI_PATH = CURRENT_PATH / "ui" / "Optical_20260430.ui"
 
 
 def icon_path(name):
@@ -1601,11 +1601,23 @@ class Optical:
 		else:
 			state = "missing"
 
-		widget = self.wgOptical.input_targetFolder
-		widget.setProperty("pathState", state)
-		widget.style().unpolish(widget)
-		widget.style().polish(widget)
-		widget.update()
+		widgets = [
+			self.wgOptical.input_targetFolder,
+			self.wgOptical.btn_browseTargetFolder,
+		]
+
+		for widget in widgets:
+			widget.setProperty("pathState", state)
+			widget.style().unpolish(widget)
+			widget.style().polish(widget)
+			widget.update()
+			widget.repaint()
+
+		print("Target folder state:", state)
+		print("LineEdit property:", self.wgOptical.input_targetFolder.property("pathState"))
+		print("Button property:", self.wgOptical.btn_browseTargetFolder.property("pathState"))
+		print("Button objectName:", self.wgOptical.btn_browseTargetFolder.objectName())
+		print("Button stylesheet:", self.wgOptical.btn_browseTargetFolder.styleSheet())
 
 	# ******************************************************************************
 	# FOLDER / IMAGE SELECTION
