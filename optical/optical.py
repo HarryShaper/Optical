@@ -586,6 +586,7 @@ class Optical:
 	def __init__(self):
 		self.wgOptical = QtCompat.loadUi(str(UI_PATH))
 
+
 		# ----------------------------------------------------------------------
 		# STATE
 		self.current_target_folder = ""
@@ -771,6 +772,7 @@ class Optical:
 		)
 
 		self.wgOptical.setWindowIcon(QtGui.QIcon(icon_path("logo", "ico")))
+
 
 		# ----------------------------------------------------------------------
 		# TARGET FOLDER INPUT SETUP
@@ -1445,7 +1447,7 @@ class Optical:
 
 		if running:
 			button.setText("RUNNING...")
-			button.setEnabled(False)
+			button.setProperty("ocrRunning", True)
 			button.setStyleSheet("""
 				QPushButton#btn_autoRun {
 					background-color: #C62828;
@@ -1458,7 +1460,7 @@ class Optical:
 			""")
 		else:
 			button.setText("AUTO-RUN")
-			button.setEnabled(True)
+			button.setProperty("ocrRunning", False)
 			button.setStyleSheet("")
 
 	def get_subfolders(self, folder_path):
@@ -1873,6 +1875,9 @@ class Optical:
 		return best_text, best_image
 
 	def press_autoRun(self):
+		if getattr(self, "_ocr_is_running", False):
+			return
+
 		if not self.current_target_folder or not os.path.isdir(self.current_target_folder):
 			return
 
@@ -1883,6 +1888,7 @@ class Optical:
 		if not self.confirm_cpu_ocr_fallback_if_needed():
 			return
 
+		self._ocr_is_running = True
 		self.set_auto_run_button_state(True)
 
 		progress = OCRProgressDialog(
@@ -1899,7 +1905,6 @@ class Optical:
 		try:
 			module = self.ensure_ocr_module(progress)
 			if module is None:
-				progress.close()
 				return
 
 			for index, folder_path in enumerate(subfolders, start=1):
@@ -1936,16 +1941,19 @@ class Optical:
 				QtWidgets.QApplication.processEvents()
 
 		finally:
+			self._ocr_is_running = False
 			progress.close()
 			self.set_auto_run_button_state(False)
 
 		if self.current_folder_path:
 			self.load_current_folder_text(self.current_folder_path)
 			self.update_preview_status_indicator()
-			QtCore.QTimer.singleShot(0, lambda: self.show_folder_preview(self.current_folder_path))
+			QtCore.QTimer.singleShot(
+				0,
+				lambda: self.show_folder_preview(self.current_folder_path)
+			)
 
-		#self.wgOptical.input_targetFolder.deselect()
-		self.wgOptical.btn_autoRun.setFocus()
+		self.wgOptical.clearFocus()
 
 	def press_confirm(self):
 		if not self.current_folder_path:

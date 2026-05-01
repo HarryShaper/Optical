@@ -14,6 +14,7 @@ import re
 import cv2
 import easyocr
 from tqdm import tqdm
+from pathlib import Path
 
 
 # CONSTANTS
@@ -37,6 +38,12 @@ CONFUSABLE_DIGITS = {
 	"0": ["O"],
 	"9": ["G"]
 }
+
+def resource_path(relative_path):
+	if getattr(sys, "frozen", False):
+		return Path(sys._MEIPASS) / relative_path
+
+	return Path(__file__).resolve().parents[1] / relative_path
 
 
 #*********************************************************************#
@@ -290,9 +297,14 @@ def generate_confusable_numbers(num_str: str):
 # EasyOCR officially exposes a boolean gpu flag.
 # We allow both CUDA and MPS to request accelerated mode here.
 # If EasyOCR / environment cannot truly use MPS, it may still behave like CPU.
+EASYOCR_DIR = resource_path("assets/easyocr")
+
 reader = easyocr.Reader(
 	LANGUAGES,
 	gpu=(TORCH_BACKEND in ("cuda", "mps")),
+	model_storage_directory=str(EASYOCR_DIR),
+	user_network_directory=str(EASYOCR_DIR / "user_network"),
+	download_enabled=False,
 	verbose=False
 )
 
