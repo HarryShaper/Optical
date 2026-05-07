@@ -1,0 +1,19 @@
+Copyright (c) 2026 Harry Shaper
+
+All rights reserved.
+
+This software and associated source code are the exclusive property of Harry Shaper.
+
+Permission is granted to download and use this software for personal, educational, and professional evaluation purposes only.
+
+You may not:
+
+- Modify, adapt, reverse engineer, or create derivative works from this software
+- Redistribute this software or its source code
+- Sell, sublicense, rent, lease, or commercially exploit this software
+- Use any portion of the source code in another application or product
+
+This software is provided "as is", without warranty of any kind, express or implied.
+
+For licensing inquiries, contact:
+harryshaper@gmail.com
